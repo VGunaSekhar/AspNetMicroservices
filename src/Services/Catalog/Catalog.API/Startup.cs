@@ -25,6 +25,16 @@ namespace Catalog.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddSwaggerGen(options => {
+                options.SwaggerDoc("v1", 
+                    new Microsoft.OpenApi.Models.OpenApiInfo
+                    {
+                        Title = "Catalog.API",
+                        Description = "",
+                        Version = "v1 "
+                    }
+                        );
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,6 +52,11 @@ namespace Catalog.API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json","Catalog.API");
             });
         }
     }
