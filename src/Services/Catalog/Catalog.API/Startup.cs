@@ -1,3 +1,5 @@
+using Catalog.API.Data;
+using Catalog.API.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -35,6 +37,9 @@ namespace Catalog.API
                     }
                         );
             });
+            //When the Asp.Net code sees ICatalogContext it dynamically create obj for CatalogContext using built-in DI
+            services.AddScoped<ICatalogContext, CatalogContext>();
+            services.AddScoped<IProductRepository, ProductRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
