@@ -21,6 +21,8 @@ namespace Discount.Grpc
             services.AddScoped<IDiscountRepository, DiscountRepository>();
             services.AddGrpc();
             services.AddAutoMapper(typeof(Startup));
+            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2Support", true);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -11,6 +11,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using StackExchange.Redis;
 using Basket.API.Repositories;
+using Basket.API.GrpcServices;
+using Discount.Grpc.Protos;
 
 namespace Basket.API
 {
@@ -26,6 +28,9 @@ namespace Basket.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(
+                o =>o.Address = new Uri(Configuration["GrpcSettings:DiscountUrl"]));
+            services.AddScoped<DiscountGrpcService>();
             services.AddStackExchangeRedisCache(options =>
             {
                 options.Configuration = Configuration.GetValue<string>("CacheSettings:ConnectionString"); 
@@ -42,6 +47,8 @@ namespace Basket.API
                     }
                         );
             });
+            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2Support", true);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
